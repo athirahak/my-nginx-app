@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: gcr.io/nginx-web-app/my-nginx-app  # This should match your Docker image in GCR
+        image: gcr.io/nginx-app-project-dev/my-nginx-app  # This should match your Docker image in GCR
         ports:
         - containerPort: 80
 
