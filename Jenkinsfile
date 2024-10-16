@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "gcr.io/nginx-web-app/my-nginx-app"
+        DOCKER_IMAGE = "gcr.io/nginx-app-project-dev/my-nginx-app"
+        PROJECT_ID = "nginx-app-project-dev"
     }
 
     stages {
@@ -11,6 +12,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/athirahak/my-nginx-app.git'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -18,14 +20,18 @@ pipeline {
                 }
             }
         }
+
         stage('Push to Google Container Registry') {
             steps {
                 script {
-                    sh 'gcloud auth configure-docker'
-                    docker.image("${DOCKER_IMAGE}").push()
+                    withEnv(["PATH+GCLOUD=/google-cloud-sdk/bin"]) {
+                        sh 'gcloud auth configure-docker'
+                        sh "docker push ${DOCKER_IMAGE}"
+                    }
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
@@ -47,3 +53,4 @@ pipeline {
         }
     }
 }
+
