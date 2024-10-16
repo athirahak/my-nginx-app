@@ -8,8 +8,7 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /Users/athirahak/.docker/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock  # Bind mount for Docker socket
     ports:
       - "8081:8080"
       - "50000:50000"
