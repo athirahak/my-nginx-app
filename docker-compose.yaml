@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   jenkins:
-    image: custom-jenkins:latest
+    image: gcr.io/nginx-app-project-dev/my-nginx-app:latest
     user: root
     volumes:
       - jenkins_home:/var/jenkins_home
