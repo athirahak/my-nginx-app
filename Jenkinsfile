@@ -37,7 +37,7 @@ pipeline {
                 script {
                     sh """
                     gcloud container clusters get-credentials my-nginx-cluster --zone us-central1-c
-                    kubectl apply -f jenkins-deployment.yaml
+                    kubectl apply -f nginx-deployment.yaml
                     """
                 }
             }
