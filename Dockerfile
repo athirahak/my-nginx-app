@@ -28,6 +28,8 @@ RUN apt-get update && \
     echo "deb [signed-by=/usr/share/keyrings/cloud-google-archive-keyring.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list > /dev/null && \
     apt-get update && \
     apt-get install -y google-cloud-sdk && \
+    # Install gke-gcloud-auth-plugin using apt-get
+    apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin && \
     # Install kubectl based on architecture
     if [ "$TARGETARCH" = "arm64" ]; then \
       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"; \
@@ -36,8 +38,6 @@ RUN apt-get update && \
     fi && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/ && \
-    # Install gke-gcloud-auth-plugin
-    gcloud components install gke-gcloud-auth-plugin && \
     # Clean up unnecessary files
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
