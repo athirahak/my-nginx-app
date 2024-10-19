@@ -36,6 +36,8 @@ RUN apt-get update && \
     fi && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/ && \
+    # Install gke-gcloud-auth-plugin
+    gcloud components install gke-gcloud-auth-plugin && \
     # Clean up unnecessary files
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
