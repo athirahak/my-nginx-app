@@ -7,11 +7,13 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock  # Bind mount for Docker socket
+      - /Users/athirahak/gcp/nginx-app-project-dev-573508d6bd78.json:/var/jenkins_home/gcp-key.json  # Mount the GCP key file
     ports:
       - "8081:8080"
       - "50000:50000"
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - GOOGLE_APPLICATION_CREDENTIALS=/var/jenkins_home/gcp-key.json  # Set environment variable for GCP key
     restart: always
 
 volumes:
