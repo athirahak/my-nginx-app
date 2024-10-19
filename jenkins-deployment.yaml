@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins-deployment
-  labels:
-    app: jenkins
 spec:
   replicas: 1
   selector:
@@ -14,31 +12,24 @@ spec:
       labels:
         app: jenkins
     spec:
+      initContainers:
+      - name: volume-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /var/jenkins_home"]
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home
       containers:
       - name: jenkins
         image: gcr.io/nginx-app-project-dev/my-nginx-app:latest
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home
         ports:
         - containerPort: 8080
         - containerPort: 50000
-        volumeMounts:
-        - name: jenkins-data
-          mountPath: /var/jenkins_home
       volumes:
-      - name: jenkins-data
+      - name: jenkins-home
         persistentVolumeClaim:
           claimName: jenkins-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jenkins-service
-  labels:
-    app: jenkins
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 81
-    targetPort: 8080
-  selector:
-    app: jenkins
 
